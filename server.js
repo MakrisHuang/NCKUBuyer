@@ -3,7 +3,6 @@ var app = express();
 
 app.use(express.static('app'));
 app.use(express.static('node_modules'));
-app.use(express.static('server'));
 
 app.get('/', function(request, response){
 	response.sendFile(__dirname + '/app/client-index.html');
@@ -17,4 +16,4 @@ app.listen(3000, function(){
 	console.log('listening on port 3000');
 });
 
-angular.module('NCKUBuyer', ['ngRoute']);
+// angular.module('NCKUBuyer', ['ngRoute']);

@@ -1,0 +1,48 @@
+<div class="scrollable">
+	<div class="scrollable-content">
+		<div class="section">
+            <ui-shared-state id="activeTab" default='1'></ui-shared-state>
+            
+            <!-- tab button -->
+            <ul class="nav nav-tabs" ng-repeat="store in BuyController.stores">
+                <li ui-class="{'active': activeStore == 1}">
+                    <a ui-set="{'activeStore': 1}">{{}}</a>
+                </li>
+            </ul>
+            <!-- end of tab button -->
+            
+            <!-- page content -->
+            <div ui-if="BuyController.activeStore == 1">
+                <div class="store-foods" ng-repeat="food in BuyController.foods">
+                    <div class="food">
+                        <p>{{food.name}}</p>
+                        <p>{{food.price}}</p>
+                        <button ng-click="ButController.add(food)">Add</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end of page content -->
+            
+            <!-- order -->
+            <div class="panel panel-default">
+                <div class="panel-heading">Your Order</div>
+                <table>
+                    <tr>
+                        <th>Food</th>
+                        <th>Price</th>
+                        <th>Num</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr ng-repeat="orderedFood in ButController.orderedFoods">
+                        <td>{{orderedFood.name}}</td>
+                        <td>{{orderedFood.price}}</td>
+                        <td>{{orderedFood.num}}</td>
+                        <td>{{orderedFood.total}}</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- end of order -->
+                
+		</div> <!-- end of section -->
+	</div>
+</div>
