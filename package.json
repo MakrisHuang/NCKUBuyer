@@ -14,5 +14,8 @@
     "ncku"
   ],
   "author": "Makris Huang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "angular-route": "^1.6.0"
+  }
 }
