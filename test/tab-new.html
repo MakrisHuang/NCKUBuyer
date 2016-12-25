@@ -1,0 +1,272 @@
+<!doctype html>
+<html ng-app="myApp">
+    <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+      <title>Tabs component</title>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.js"></script>
+	  <script type="text/javascript" src="bootstrap.min.js"></script>
+	  <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+        
+        <script src="mobile-angular-ui.min.js"></script>
+        <script src="mobile-angular-ui.gestures.min.js"></script>
+        
+	  <link rel="stylesheet" type="text/css" href="bootstrap-theme.min.css">
+
+      <link rel="stylesheet" type="text/css" href="style.css">
+      <script>
+        angular.module("myApp", ['mobile-angular-ui'])
+        .controller('MainCtrl', [function($scope){
+        	var self = this;
+        	self.title = "我要買宵夜!";
+        	self.stores = [
+				{"id": 0,
+				 "name": "小上海",
+				 "items": [
+				 		{"food": "薯條", 
+				 		 "price": 20, 
+                         "storeId": 0
+				 		}, 
+				 		{"food": "雞排", 
+				 		 "price": 40, 
+                         "storeId": 0
+				 		},
+				 		{"food": "鹽酥雞", 
+				 		 "price": 30, 
+                         "storeId": 0
+				 		}, 
+                        {"food": "雞腿棒", 
+                         "price": 20, 
+                         "storeId": 0
+				 		}
+					]
+				}, 
+				{"id": 1,
+				 "name": "轉角關東煮",
+				 "items": [
+				 		{"food": "黑輪", 
+				 		 "price": 10, 
+				 		}, 
+				 		{"food": "蝦棒", 
+				 		 "price": 10, 
+				 		},
+				 		{"food": "米血", 
+				 		 "price": 5, 
+				 		}, 
+                        {"food": "地瓜葉", 
+				 		 "price": 15, 
+				 		}
+					]
+				}, 
+				{"id": 2,
+				 "name": "store 3",
+				 "items": [
+				 		{"food": "food3-1", 
+				 		 "price": 70, 
+				 		}, 
+				 		{"food": "food3-2", 
+				 		 "price": 80, 
+				 		},
+				 		{"food": "food3-3", 
+				 		 "price": 90, 
+				 		}
+					]
+				}
+			];
+			self.selectedStoreId = 0;
+            
+			self.getCurrentItems = function(tab){
+				return self.stores[tab].items;
+			}
+                
+            self.setCurrentStoreId = function(tab){
+                self.selectedStoreId = tab;    
+            }
+            
+			self.getCurrentStoreName = function(tab){
+				return self.stores[tab].name;
+			}
+            
+            self.order = new Array();
+            
+            self.addFood = function(item){
+                // check if the item is already ordered
+                var foodName = item.food;
+                var storeId = self.selectedStoreId;
+                
+                var orderIndex = -1;
+                for (i = 0; i < self.order.length; i++){
+                    if (foodName == self.order[i].food && storeId == self.order[i].storeId){
+                        // found already exists
+                        orderIndex = i;
+                        break;
+                    }
+                }
+                
+                if (orderIndex == -1){  // new item
+                    var orderedItem = {};
+                    
+                    orderedItem['storeId'] = self.stores[self.selectedStoreId].id;
+                    orderedItem['storeName'] = self.stores[self.selectedStoreId].name;
+                    orderedItem['amount'] = 1;
+                    orderedItem['food'] = item.food;
+                    orderedItem['price'] = item.price;
+                    self.order.push(orderedItem);
+                }else{  // old item, increase its amount
+                    self.order[orderIndex].amount += 1;
+                }
+                
+                console.log(self.order);
+            }
+            
+            self.increaseAmount = function(orderedItem){
+                orderedItem['amount']++;
+            }
+            
+            self.decreaseAmount = function(orderedItem, $index){
+                orderedItem['amount']--;
+                if (orderedItem['amount'] == 0){
+                    self.order.splice($index, 1)
+                }
+            }
+            
+            self.totalPrice = function(){
+                if (self.order.length > 0){
+                    var total = 0;
+                    for(i = 0; i < self.order.length; i++){
+                        total += self.order[i].price * self.order[i].amount;
+                    }
+                    return total;
+                }else{
+                    return 0;
+                }
+            }
+            
+            self.removeOrderedItem = function($index){
+                self.order.splice($index, 1);
+            }
+        }]);
+      </script>
+    </head>
+    <body ng-controller="MainCtrl as ctrl">
+    	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    		<div class="navbar-header">
+    			<a class="navbar-brand pull-left" href="#">Home</a>
+    			<a class="navbar-brand title">{{ctrl.title}}</a>
+    			<a class="navbar-brand pull-right" href="#">Setting</a>
+    		</div>
+    	</nav>
+
+        <div class="scrollable orderContent">
+            <div class="scrollable-content">
+              <div class='section'>
+                <ui-shared-state id='activeTab' default='0'></ui-shared-state>
+
+                <ul class="nav nav-tabs">
+                  <li ui-class="{'active': activeTab == 0}">
+                    <a ui-set="{'activeTab': 0}" ng-click="ctrl.setCurrentStoreId(0)">{{ctrl.getCurrentStoreName(0)}}</a>
+                  </li>
+                  <li ui-class="{'active': activeTab == 1}">
+                    <a ui-set="{'activeTab': 1}" ng-click="ctrl.setCurrentStoreId(1)">{{ctrl.getCurrentStoreName(1)}}</a>
+                  </li>
+                  <li ui-class="{'active': activeTab == 2}">
+                    <a ui-set="{'activeTab': 2}" ng-click="ctrl.setCurrentStoreId(2)">{{ctrl.getCurrentStoreName(2)}}</a>
+                  </li>
+                </ul>
+                
+                <!-- food item -->
+                <div ui-if="activeTab == 0">
+                    <div class="container">
+                        <div class="row" ng-repeat="item in ctrl.getCurrentItems(0)">
+                            <div class="col-xs-6">
+                                <h5>{{item.food}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <h5>${{item.price}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" class="btn btn-info btn-sm" ng-click="ctrl.addFood(item)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ui-if="activeTab == 1">
+                    <div class="container">
+                        <div class="row" ng-repeat="item in ctrl.getCurrentItems(1)">
+                            <div class="col-xs-6">
+                                <h5>{{item.food}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <h5>${{item.price}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" class="btn btn-info btn-sm" ng-click="ctrl.addFood(item)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ui-if="activeTab == 2">
+                    <div class="container">
+                        <div class="row" ng-repeat="item in ctrl.getCurrentItems(2)">
+                            <div class="col-xs-6">
+                                <h5>{{item.food}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <h5>${{item.price}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" class="btn btn-info btn-sm" ng-click="ctrl.addFood(item)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end of food item -->
+              </div> <!-- end of food item section -->
+                
+                <div class="section">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Your Order</div>
+                        
+                        <!-- panel content -->
+                        <table class="table">
+                            <tr>
+                                <th>Food (Store)</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                                <th>Total</th>
+                            </tr>
+                            <tr ng-repeat="orderedItem in ctrl.order">
+                                <td>
+                                    <ul class="nav nav-pills">
+                                        <li ng-click="ctrl.removeOrderedItem($index)">
+                                            <span  class="glyphicon glyphicon-remove-circle" ></span>
+                                        </li>
+                                        <li>{{orderedItem.food}} ({{orderedItem.storeName}})
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>{{orderedItem.price}}</td>
+                                <td>
+                                    <span class="glyphicon glyphicon-plus-sign" ng-click="ctrl.increaseAmount(orderedItem)"></span>
+                                    <span class="label label-primary">{{orderedItem.amount}}</span>
+                                    <span class="glyphicon glyphicon-minus-sign" ng-click="ctrl.decreaseAmount(orderedItem, $index)"></span>
+                                </td>
+                                <td>{{orderedItem.price * orderedItem.amount}}</td>
+                            </tr>
+                        </table>
+                        <div class="panel-footer" ng-show="ctrl.order.length > 0">
+                            <div class="nav nav-pills">
+                                <div class="pull-left">Total</div>
+                                <div class="pull-right">{{ctrl.totalPrice()}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end of order section -->
+                
+            </div> <!-- end of scrollable-content -->
+        </div> <!-- end of scrollable orderContent -->
+    </body>
+</html>
