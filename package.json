@@ -16,6 +16,7 @@
   "author": "Makris Huang",
   "license": "MIT",
   "dependencies": {
-    "angular-route": "^1.6.0"
+    "angular-route": "^1.6.0",
+    "socket.io": "^1.7.2"
   }
 }

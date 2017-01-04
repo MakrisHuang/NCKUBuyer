@@ -9,6 +9,14 @@ module.exports = function(app){
     });
     
     app.post('/buy', function(request, response){
-        // handle request of buying
+        // progress bar
+        if (request.body['req']){
+            console.log('progress bar')
+            response.send({'progress': 60})
+        }else{
+            // order handling
+            console.log('order: ', request.body)
+            response.send({msg: 'get order'})
+        }
     });
 };
