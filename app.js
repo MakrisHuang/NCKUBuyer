@@ -12,11 +12,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // set root path
 app.set('app', __dirname + '/app');
 
-// root route
-app.get('/', function(request, response){
-    response.sendFile('index.html');
-    response.status(400);
-});
+//// root route
+//app.get('/', function(request, response){
+//    response.sendFile('index.html');
+//    response.status(400);
+//});
 
 // load route
 require('./server/routes/buy')(app);

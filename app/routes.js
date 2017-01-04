@@ -1,6 +1,5 @@
 angular.module('NCKUBuyer').config(function($routeProvider){
-	$routeProvider
-    .when('/', {
+	$routeProvider.when('/', {
         redirectTo: '/buy'
     })
     
