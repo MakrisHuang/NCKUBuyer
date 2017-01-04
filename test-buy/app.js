@@ -1,5 +1,5 @@
-angular.module("NCKUBuyer", ['ngRoute', 'mobile-angular-ui'])
-.controller('BuyController', [function($scope){
+angular.module("myApp", ['mobile-angular-ui'])
+.controller('MainCtrl', [function($scope){
     var self = this;
 
     // data

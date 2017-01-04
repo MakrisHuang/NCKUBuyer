@@ -1,8 +1,8 @@
 angular.module('NCKUBuyer')
-.controller('BuyController', function($http, $scope){
-	$scope.activeTab = 1;
-    
-    $scope.setActiveTab = function(tab){
-        $scope.activeTab = tab;
-    }
+.controller('BuyController', function($http){
+   var self = this;
+    $http({method: 'GET', url: '/buy'}).success(function(data){
+        console.log("[controller] data from GET" + data)
+        self.data = data;
+    });
 });

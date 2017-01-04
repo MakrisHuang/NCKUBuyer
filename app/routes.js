@@ -1,21 +1,24 @@
-angular.module('NCKUBuyer')
-.config(function($routeProvider){
-	$routeProvider.when('/buy', {
+angular.module('NCKUBuyer').config(function($routeProvider){
+	$routeProvider
+    .when('/', {
+        redirectTo: '/buy'
+    })
+    
+    .when('/buy', {
 		templateUrl: '/templates/buy.html', 
 		controller: 'BuyController', 
-
 	})
 
-	.when('helpToBuy', {
+	.when('/helpToBuy', {
 		templateUrl: '/templates/helpToBuy.html', 
 		controller: 'HelpToBuyController'
 	})
 
-	.when('myInfo', {
+	.when('/myInfo', {
 		templateUrl: '/templates/myInfo.html', 
 		controller: 'MyInfoController'
 	})
 
-	.otherwise({ redirectTo: '/' });
+	.otherwise({ redirectTo: '/buy' });
 
 });

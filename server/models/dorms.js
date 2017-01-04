@@ -15,3 +15,14 @@ var dorms = [
 		"location": "dorm3-location"
 	}
 ]
+
+module.exports = {
+    get: function(id){
+        return _.find(dorms, function(dorm){
+            return dorm.id === id;
+        })
+    },
+    all: function(){
+        return dorms;
+    }
+}
