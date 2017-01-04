@@ -12,16 +12,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // set root path
 app.set('app', __dirname + '/app');
 
-//// root route
-//app.get('/', function(request, response){
-//    response.sendFile('index.html');
-//    response.status(400);
-//});
-
 // load route
-require('./server/routes/buy')(app);
-require('./server/routes/helpToBuy')(app);
-require('./server/routes/myInfo')(app);
+require('./server/routes/main')(app);
+require('./server/routes/page_buy')(app);
+require('./server/routes/page_helpToBuy')(app);
+require('./server/routes/page_myInfo')(app);
 
 app.listen(3000, function(){
 	console.log('listening on port 3000');

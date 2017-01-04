@@ -1,77 +1,15 @@
 angular.module('NCKUBuyer')
-.controller('BuyController', function($http){
-   var self = this;
-//    $http({method: 'GET', url: '/buy'}).success(function(data){
-//        console.log("[controller] data from GET" + data)
-//        self.data = data;
-//    });
+.controller('BuyController', function($http, $scope){
+    var self = this;
+    self.stores = [];
+    
+    $http({method: 'GET', url: '/buy'}).then(function succ(response){
+        self.stores = response.data;
+    });
     
     // data
     self.title = "我要買宵夜!";
-    self.stores = [
-        {"id": 0,
-         "name": "小上海",
-         "items": [
-                {"food": "薯條", 
-                 "price": 20, 
-                 "storeId": 0
-                }, 
-                {"food": "雞排", 
-                 "price": 40, 
-                 "storeId": 0
-                },
-                {"food": "鹽酥雞", 
-                 "price": 30, 
-                 "storeId": 0
-                }, 
-                {"food": "雞腿棒", 
-                 "price": 20, 
-                 "storeId": 0
-                }
-            ]
-        }, 
-        {"id": 1,
-         "name": "轉角關東煮",
-         "items": [
-                {"food": "黑輪", 
-                 "price": 10, 
-                }, 
-                {"food": "蝦棒", 
-                 "price": 10, 
-                },
-                {"food": "米血", 
-                 "price": 5, 
-                }, 
-                {"food": "地瓜葉", 
-                 "price": 15, 
-                }
-            ]
-        }, 
-        {"id": 2,
-         "name": "歡喜鹹酥雞",
-         "items": [
-                {"food": "雞排", 
-                 "price": 40, 
-                }, 
-                {"food": "杏鮑菇", 
-                 "price": 20, 
-                },
-                {"food": "小黃瓜", 
-                 "price": 20, 
-                }, 
-                {"food": "茄子", 
-                 "price": 20, 
-                }, 
-                {"food": "花椰菜", 
-                 "price": 20, 
-                }, 
-                {"food": "秀珍菇", 
-                 "price": 20, 
-                }
-            ]
-        }
-    ];
-
+    
     self.orderDescription = "幫買小幫手：每筆訂單至少須多加10元的工本費，每買3個項目則多加5元，不足3個則以5元計算 ^_^"
 
     self.selectedStoreId = 0;

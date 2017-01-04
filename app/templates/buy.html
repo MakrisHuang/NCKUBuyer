@@ -1,4 +1,4 @@
-<div class='section'>
+<div class='section' style="margin-top: 50px;">
     <ui-shared-state id='activeTab' default='0'></ui-shared-state>
 
     <ul class="nav nav-tabs">
@@ -14,7 +14,7 @@
     </ul>
 
     <!-- food item -->
-    <div ui-if="activeTab == 0">
+    <div ui-if="activeTab == 0" style="margin-top: 10px;">
         <div class="container">
             <div class="row" ng-repeat="item in ctrl.getCurrentItems(0)">
                 <div class="col-xs-6">
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div ui-if="activeTab == 1">
+    <div ui-if="activeTab == 1" style="margin-top: 10px;">
         <div class="container">
             <div class="row" ng-repeat="item in ctrl.getCurrentItems(1)">
                 <div class="col-xs-6">
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div ui-if="activeTab == 2">
+    <div ui-if="activeTab == 2" style="margin-top: 10px;">
         <div class="container">
             <div class="row" ng-repeat="item in ctrl.getCurrentItems(2)">
                 <div class="col-xs-6">

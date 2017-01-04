@@ -6,6 +6,7 @@ angular.module('NCKUBuyer').config(function($routeProvider){
     .when('/buy', {
 		templateUrl: '/templates/buy.html', 
 		controller: 'BuyController', 
+        controllerAs: 'ctrl'
 	})
 
 	.when('/helpToBuy', {
