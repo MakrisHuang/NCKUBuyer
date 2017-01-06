@@ -1,1 +1,1 @@
-angular.module("NCKUBuyer", ['ngRoute', 'mobile-angular-ui']);
+var app = angular.module("NCKUBuyer", ['ngRoute', 'mobile-angular-ui']);

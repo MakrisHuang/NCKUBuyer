@@ -61,7 +61,7 @@
             </div>
         </div>
     </div> <!-- end of food item -->
-  </div> <!-- end of food item section -->
+</div> <!-- end of food item section -->
 
     <!-- order section -->
     <div class="section">
@@ -127,7 +127,7 @@
         <!-- end of progress bar -->
 
         <!-- helper info -->
-        <div class="panel panel-success" ng-show="progressDone()">
+        <div class="panel panel-success" ng-show="progressDone(1)">
             <div class="panel-heading">Helper Info</div>
             <div class="panel-body">您的訂單已成立，以下為幫買人的資訊，請耐心等候</div>
             <table class="table">
@@ -154,5 +154,12 @@
             </table>
         </div>
         <!-- end of helper info -->
+        
+        <!-- no helper found info -->
+        <div class="panel panel-danger" ng-show="progressDone(0)">
+            <div class="panel-heading">Helper Info</div>
+            <div class="panel-body">不好意思，目前沒有幫買的人QAQ</div>
+        </div>
+        <!-- end no helper found info -->
     </div>
     <!-- end of find helper section -->

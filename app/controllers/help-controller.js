@@ -1,4 +1,4 @@
 angular.module('NCKUBuyer')
-.controller('HelpToBuyController', function(){
-
+.controller('HelpToBuyController', function($http, $scope, $timeout, FindHelper){
+    
 });

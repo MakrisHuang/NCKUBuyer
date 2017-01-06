@@ -22,12 +22,8 @@ var server = app.listen(3000, function(){
 	console.log('listening on port 3000');
 });
 var io = require('socket.io')(server);
+var socket = require('./server/socket');
 
 // socket.io
-io.on('connection', function(socket){
-    console.log('connected')
-    socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
-})
+io.on('connection', socket);
 

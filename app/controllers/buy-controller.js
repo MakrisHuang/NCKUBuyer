@@ -1,5 +1,5 @@
 angular.module('NCKUBuyer')
-.controller('BuyController', function($http, $scope, $timeout){
+.controller('BuyController', function($http, $scope, $timeout, FindHelper){
     $scope.stores = [];
     
     $http({method: 'GET', url: '/buy'}).then(function succ(response){
@@ -110,31 +110,6 @@ angular.module('NCKUBuyer')
     // handle progress bar
     $scope.progress = -1;
     $scope.progressBarStyle = {'width': '0%'}
-    $scope.getProgressBar = function(){
-        var req = {'req': 'bar'}
-        $http.post('/buy', req).then(function(response){
-            $scope.progress = response.data['progress']
-            
-            var progressStr = $scope.progress.toString();
-            progressStr += "%";
-            $scope.progressBarStyle['width'] = progressStr;
-        });
-    }
-    var checkProgressBar;
-    
-    $scope.intervalProgressBar = function(){
-        checkProgressBar = setTimeout(function(){
-            $scope.getProgressBar();
-            $scope.intervalProgressBar();
-        }, 2000);
-        
-        if ($scope.progress == 100){
-            clearTimeout(checkProgressBar);
-        }
-        
-        console.log('processing')
-    }
-    
     $scope.showProgressBar = function(){
         if ($scope.progress == -1 || $scope.progress == 100)
             return false;
@@ -142,25 +117,50 @@ angular.module('NCKUBuyer')
             return true;
     }
     
-    $scope.progressDone = function(){
-        if ($scope.progress == 100)
-            return true;
+    $scope.progressDone = function(whichPanel){
+        if ($scope.progress == 100){
+            if ($scope.helper){
+                if (whichPanel == 1) // helper panel
+                    return 1
+                else                 // no-helper panel
+                    return 0
+            }else{
+                if (whichPanel == 1) // helper panel
+                    return 0
+                else                 // no-helper panel
+                    return 1
+            }
+        }
         else
             return false;
     }
     
-    // handle helper
+    // send order and find helper
     $scope.helper = null;
     $scope.findHelper = function(){
-        $scope.progress = 0;
-        $scope.intervalProgressBar();
-
         if ($scope.order.length > 0){
-            $http.post('/buy', $scope.order).
-            then(function(response){                                   $scope.message = response.data.msg;
-                console.log("post: ", $scope.order)
-                console.log('msg: ', $scope.message)
-            });
+            FindHelper.emit('send:order', $scope.order)
         }
     }
+    
+    // FindHelper service here
+    FindHelper.on('init', function(data){
+        console.log('init caught from server: ', data)
+    });
+    
+    FindHelper.on('send:progress', function(data){
+        console.log('on: [send:progress]', data);
+        
+        $scope.progress = data;
+        var progressStr = $scope.progress.toString() + "%";
+        $scope.progressBarStyle['width'] = progressStr;
+    });
+    
+    FindHelper.on('found:helper', function(data){
+        console.log('on: [found:helper]', data) 
+    });
+    
+    FindHelper.on('notfound:helper', function(data){
+        console.log('on: [notfound:helper]', data)
+    })
 });
