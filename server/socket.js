@@ -131,6 +131,10 @@ module.exports = function(socket){
         socket.broadcast.emit('send:allHelper', allUsers.getAllHelper());
     });
     
+    var sleep = function (ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
     // event listeners
     socket.on('send:order', function(orderInfo){
         console.log('on: [send:order]', orderInfo)
@@ -144,8 +148,19 @@ module.exports = function(socket){
             
             if (helper){
                 // 1. send done progress
+                counter = 90;
+                socket.emit('send:progress', counter)
+                
+                // 2. wait for 1 second
+                var start = new Date().getTime();
+                for (var i = 0; i < 1e7; i++) {
+                    if ((new Date().getTime() - start) > 1e7){
+                        break;
+                    }
+                }
+                
                 counter = 100;
-                socket.emit('send:progress', 100)
+                socket.emit('send:progress', counter)
                 
                 // 2. send notification for helper
                 var buyer = orderInfo['buyer'];
