@@ -39,15 +39,17 @@
     
     <!-- controller -->
     <script src="controllers/buy-controller.js"></script>
+    <script src="controllers/help-controller.js"></script>
+    <script src="controllers/myinfo-controller.js"></script>
     
     </head>
     
-    <body ng-controller="BuyController as ctrl">
+    <body>
     	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     		<div class="navbar-header">
-    			<a class="navbar-brand pull-left" href="#">Home</a>
-    			<a class="navbar-brand title">{{title}}</a>
-    			<a class="navbar-brand pull-right" href="#">Setting</a>
+    			<a class="navbar-brand pull-left" href="#/buy" ng-click="setIdentity('buyer')">買宵夜</a>
+    			<a class="navbar-brand title" href="#/helpToBuy" ng-click="setIdentity('helper')">幫別人買</a>
+    			<a class="navbar-brand pull-right" href="#">設定</a>
     		</div>
     	</nav>
 

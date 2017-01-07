@@ -1,5 +1,5 @@
 angular.module('NCKUBuyer')
-.controller('BuyController', function($http, $scope, $timeout, FindHelper){
+.controller('BuyController', function($http, $scope, FindHelper){
     $scope.stores = [];
     
     $http({method: 'GET', url: '/buy'}).then(function succ(response){
@@ -121,14 +121,14 @@ angular.module('NCKUBuyer')
         if ($scope.progress == 100){
             if ($scope.helper){
                 if (whichPanel == 1) // helper panel
-                    return 1
+                    return true
                 else                 // no-helper panel
-                    return 0
+                    return false
             }else{
                 if (whichPanel == 1) // helper panel
-                    return 0
+                    return false
                 else                 // no-helper panel
-                    return 1
+                    return true
             }
         }
         else
@@ -139,13 +139,32 @@ angular.module('NCKUBuyer')
     $scope.helper = null;
     $scope.findHelper = function(){
         if ($scope.order.length > 0){
-            FindHelper.emit('send:order', $scope.order)
+            var data = {
+                order: $scope.order, 
+                buyer: $scope.name
+            }
+            FindHelper.emit('send:order', data)
         }
     }
     
+    $scope.setIdentity = function(identity){
+        socket.emit('set:identity', {identity: 'buyer'});
+    }
+    
+    $scope.name = null;
+    $scope.allHelpers = 0;
+    
     // FindHelper service here
+    FindHelper.on('send:allHelper', function(data){
+       console.log('on: [send:allHelper]', data) 
+       $scope.allHelpers = data.length;
+    });
+    
+    FindHelper.emit('set:identity', {identity: 'buyer'})
+    
     FindHelper.on('init', function(data){
-        console.log('init caught from server: ', data)
+        console.log('on: [init]', data)
+        $scope.name = data['name']
     });
     
     FindHelper.on('send:progress', function(data){
@@ -156,8 +175,9 @@ angular.module('NCKUBuyer')
         $scope.progressBarStyle['width'] = progressStr;
     });
     
-    FindHelper.on('found:helper', function(data){
-        console.log('on: [found:helper]', data) 
+    FindHelper.on('found:helper', function(notificiationForHelper){
+        console.log('on: [found:helper]', notificiationForHelper) 
+        $scope.helper = notificiationForHelper['helper']
     });
     
     FindHelper.on('notfound:helper', function(data){

@@ -1,12 +1,12 @@
 angular.module('NCKUBuyer').config(function($routeProvider){
-	$routeProvider.when('/', {
+	$routeProvider
+    .when('/', {
         redirectTo: '/buy'
     })
     
     .when('/buy', {
 		templateUrl: '/templates/buy.html', 
 		controller: 'BuyController', 
-        controllerAs: 'ctrl'
 	})
 
 	.when('/helpToBuy', {

@@ -1,29 +1,70 @@
-<div class="section" style="margin-top: 50px;">
+<div class="section" style="margin-top: 50px;" ng-show="buyer != null">
+    <!-- buyer info -->
     <div class="panel panel-success">
         <div class="panel-heading">有新的訂單！</div>
         <div class="panel-body">
             <table class="table">
                 <tr>
                     <td>Name</td>
-                    <td>{{}}</td>
+                    <td>{{buyer}}</td>
                 </tr>
                 <tr>
                     <td>Phone</td>
-                    <td>{{}}</td>
+                    <td>{{buyer.phone}}</td>
                 </tr>
                 <tr>
                     <td>Facebook</td>
-                    <td><a href="">{{}}</a></td>
+                    <td><a href="">{{buyer.facebook}}</a></td>
                 </tr>
                 <tr>
                     <td>Extra Money</td>
-                    <td>{{}}</td>
+                    <td>{{buyer.extraMoney}}</td>
                 </tr>
                 <tr>
                     <td>Total to Pay</td>
-                    <td>{{}}</td>
+                    <td>{{buyer.total}}</td>
                 </tr>
             </table>
         </div>
     </div>
+    <!-- end of buyer info -->
+    
+    <!-- order info -->
+    <div class="panel panel-info">
+        <div class="panel-heading">Order Info</div>
+        <table class="table">
+            <tr>
+                <th>Food (Store)</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Total</th>
+            </tr>
+            <tr ng-repeat="orderedItem in order">
+                <td>
+                    <ul class="nav nav-pills">
+                        <li>{{orderedItem.food}} ({{orderedItem.storeName}})
+                        </li>
+                    </ul>
+                </td>
+                <td>{{orderedItem.price}}</td>
+                <td>
+                    <span class="label label-primary">{{orderedItem.amount}}</span>
+                </td>
+                <td>$ {{orderedItem.price * orderedItem.amount}}</td>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">額外費用</td>
+                        <td></td>
+                        <td>{{extraPay()}}</td>
+                    </tr>
+                </tfoot>
+            </tr>
+        </table>
+        <div class="panel-footer">
+            <div class="nav nav-pills">
+                <h4 class="pull-right">Total: $ {{totalPrice()}}</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end of order info -->
 </div>
