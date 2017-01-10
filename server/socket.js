@@ -111,6 +111,7 @@ var allUsers = (function(){
 var progress = 60;
 
 module.exports = function(socket){
+    // server keeps all buyers and helpers
     var user = allUsers.getName();
     
     socket.emit('init',{
@@ -130,10 +131,6 @@ module.exports = function(socket){
         socket.broadcast.emit('send:allBuyer', allUsers.getAllBuyer());
         socket.broadcast.emit('send:allHelper', allUsers.getAllHelper());
     });
-    
-    var sleep = function (ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
     
     // event listeners
     socket.on('send:order', function(orderInfo){
@@ -200,6 +197,8 @@ module.exports = function(socket){
             counter++;
         }, 1000)
     });
+    
+    // Login Part
     
     // clean up when a helper leaves
     socket.on('disconnect', function(){

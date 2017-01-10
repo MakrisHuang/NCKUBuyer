@@ -18,6 +18,16 @@ angular.module('NCKUBuyer').config(function($routeProvider){
 		templateUrl: '/templates/myInfo.html', 
 		controller: 'MyInfoController'
 	})
+    
+    .when('/login', {
+        templateUrl: '/templates/login.html', 
+        controller: 'LoginController'
+    })
+    
+    .when('/register', {
+        templateUrl: '/templates/register.html', 
+        controller: 'RegisterController'
+    })
 
 	.otherwise({ redirectTo: '/buy' });
 

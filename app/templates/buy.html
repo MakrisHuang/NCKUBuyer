@@ -110,7 +110,7 @@
             </table>
             <div class="panel-footer" ng-show="order.length > 0">
                 <div class="nav nav-pills">
-                    <button class="btn btn-success btn pull-left" ng-click="findHelper()">Find Helper! </button>
+                    <button class="btn btn-success btn pull-left" ng-click="findHelper()" ng-disabled="user.loginState == 'unlogined'">{{getFindHelperMsg()}}</button>
                     <h4 class="pull-right">Total: $ {{totalPrice()}}</h4>
                 </div>
             </div>

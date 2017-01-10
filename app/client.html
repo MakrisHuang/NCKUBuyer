@@ -36,8 +36,11 @@
     
     <!-- services: must be loaded first for use in controller -->
     <script src="services/findHelper.js"></script>
+    <script src="services/loginHelper.js"></script>
     
     <!-- controller -->
+    <script src="controllers/login-controller.js"></script>
+    <script src="controllers/register-controller.js"></script>
     <script src="controllers/buy-controller.js"></script>
     <script src="controllers/help-controller.js"></script>
     <script src="controllers/myinfo-controller.js"></script>
@@ -45,13 +48,30 @@
     </head>
     
     <body>
-    	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div ng-controller="MainController as mainCtrl">
+    	   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     		<div class="navbar-header">
+                <!-- left part -->
     			<a class="navbar-brand pull-left" href="#/buy" ng-click="setIdentity('buyer')">買宵夜</a>
     			<a class="navbar-brand title" href="#/helpToBuy" ng-click="setIdentity('helper')">幫別人買</a>
-    			<a class="navbar-brand pull-right" href="#">設定</a>
+                
+                <!-- right part -->
+                <!-- 登入和登出 -->
+    			<span class="navbar-brand pull-right" ng-hide="mainCtrl.loginHelper.isLoggedIn">
+                    <a href="#/login">登入</a>
+                </span>
+                <span class="navbar-brand pull-right" ng-show="mainCtrl.loginHelper.isLoggedIn">
+                    <a href="/logout">登出</a>
+                </span>
+                
+                <!-- 登入後的歡迎詞和設定 -->
+                <div class="navbar-brand pull-right" ng-show="mainCtrl.loginHelper.isLoggedIn">
+                    <p class="text-primary pull-left">Hi, {{user.name}}</p>
+                    <a class="pull-right" href="#/myInfo">設定</a>
+                </div>
     		</div>
     	</nav>
+        </div>
 
         <div class="scrollable orderContent">
             <div class="scrollable-content">

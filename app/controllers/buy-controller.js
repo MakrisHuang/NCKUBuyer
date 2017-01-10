@@ -1,16 +1,16 @@
 angular.module('NCKUBuyer')
-.controller('BuyController', function($http, $scope, FindHelper){
-    $scope.stores = [];
+.controller('BuyController', function($http, $scope, $rootScope, FindHelper){
+    // user $rootScope to maintain the user info
+    $rootScope.user;
     
+    $scope.stores = [];
     $http({method: 'GET', url: '/buy'}).then(function succ(response){
         $scope.stores = response.data;
     });
     
-    // data
+    /* ---------data handling begin ----------*/
     $scope.title = "我要買宵夜!";
-    
     $scope.orderDescription = "幫買小幫手：每筆訂單至少須多加10元的工本費，每買3個項目則多加5元，不足3個則以5元計算 ^_^"
-
     $scope.selectedStoreId = 0;
 
     $scope.getCurrentItems = function(tab){
@@ -105,27 +105,36 @@ angular.module('NCKUBuyer')
         total += extra * 5;
         return total;
     }
+    /* ---------data handling end ----------*/
     
+    $scope.getFindHelperMsg = function(){
+        if ($scope.user.loginState === 'logined'){
+            return "尋找幫買者"
+        }
+        if ($scope.user.loginState === 'unlogined'){
+            return "請先登入"
+        }
+    }
     
-    // handle progress bar
+    /* ---------progress bar begin ----------*/
     $scope.progress = -1;
     $scope.progressBarStyle = {'width': '0%'}
     $scope.showProgressBar = function(){
-        if ($scope.progress == -1 || $scope.progress == 100)
+        if ($scope.progress === -1 || $scope.progress === 100)
             return false;
         else
             return true;
     }
     
     $scope.progressDone = function(whichPanel){
-        if ($scope.progress == 100){
+        if ($scope.progress === 100){
             if ($scope.helper){
-                if (whichPanel == 1) // helper panel
+                if (whichPanel === 1) // helper panel
                     return true
                 else                 // no-helper panel
                     return false
             }else{
-                if (whichPanel == 1) // helper panel
+                if (whichPanel === 1) // helper panel
                     return false
                 else                 // no-helper panel
                     return true
@@ -134,6 +143,7 @@ angular.module('NCKUBuyer')
         else
             return false;
     }
+    /* ---------data handling end ----------*/
     
     // send order and find helper
     $scope.helper = null;
@@ -151,10 +161,9 @@ angular.module('NCKUBuyer')
         socket.emit('set:identity', {identity: 'buyer'});
     }
     
-    $scope.name = null;
     $scope.allHelpers = 0;
     
-    // FindHelper service here
+    /* ---------FindHelper service begin ----------*/
     FindHelper.on('send:allHelper', function(data){
        console.log('on: [send:allHelper]', data) 
        $scope.allHelpers = data.length;
@@ -183,4 +192,5 @@ angular.module('NCKUBuyer')
     FindHelper.on('notfound:helper', function(data){
         console.log('on: [notfound:helper]', data)
     })
+    /* ---------FindHelper service end ----------*/
 });

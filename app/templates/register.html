@@ -1,0 +1,59 @@
+<form class="form-horizontal" role="form" ng-submit="register()">
+    <!-- 1. account: email -->
+    <div class="form-group">
+        <label for="inputAccount" class="col-sm-2 control-label">帳號</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="inputAccount" placeholder="電子郵件" ng-model="user.account" required>
+        </div>
+    </div>
+    
+    <!-- 2. password -->
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-2 form-control">密碼</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" id="inputPassword" placeholder="密碼" ng-model="user.password" required>
+        </div>
+    </div>
+    
+    <!-- 3. name -->
+    <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">姓名</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputName" placeholder="姓名" ng-model="user.userName" required ng-minlength="1">
+        </div>
+    </div>
+
+    <!-- 4. telephone -->
+    <div class="form-group">
+        <label for="inputTelephone" class="col-sm-2 control-label">電話號碼</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputTelephone" placeholder="電話號碼" ng-model="user.telephone" required ng-minlength="9">
+        </div>
+    </div>
+
+    <!-- 5. dorm -->
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">宿舍</button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-click="getDorm(1)">光ㄧ</li>
+                    <li ng-click="getDorm(2)">光二</li>
+                    <li ng-click="getDorm(3)">勝一</li>
+                    <li ng-click="getDorm(4)">勝二</li>
+                    <li ng-click="getDorm(5)">勝三</li>
+                    <li ng-click="getDorm(6)">勝八</li>
+                    <li ng-click="getDorm(7)">勝九</li>
+                </ul>
+            </div>
+            <input type="text" class="form-control" placeholder="請選擇您的宿舍" ng-model="user.dorm" required>
+        </div>
+    </div>
+    
+    <!-- 6. submit button -->
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">送出</button>
+        </div>
+    </div>
+</form>
