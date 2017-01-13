@@ -10,11 +10,11 @@ var connection = mysql.createConnection(config);
 (function handleConnect(){
     connection.connect(function(err){
         if (err) {
-            console.log('connecting error');
+            console.log('connecting db error');
             // 2秒後重連
             setTimeout(handleConnect(), 2000);
         }
-        console.log('connecting success'); 
+        console.log('connecting db success'); 
     });
     
     connection.on('error', function(err){
@@ -31,7 +31,7 @@ var connection = mysql.createConnection(config);
 module.exports = {
     config: config,
     connection: connection,
-    queryUserExist: function(table, account, password){
+    queryUserExist: function(table, account, password, callback){
         var querySql = "SELECT * FROM " + table + " WHERE account = " + "\'" + account + "\'" + " AND password = " + "\'" + password + "\'";
         
         connection.query(querySql, function(error, results){
@@ -48,7 +48,8 @@ module.exports = {
         var insertSql = 'INSERT INTO ' + table + ' SET ? ';
         console.log('new user: ' + data)
 //        var data = {
-//            account: 'steve',
+//            account: 'steve@gmail.com',
+//            name: 'steve',
 //            password: '123',
 //            telephone: '32433', 
 //            dorm: 'kuFong-2'
@@ -56,11 +57,11 @@ module.exports = {
         
         connection.query(insertSql, data, function(error, results){
             if (error){
-                console.log('Insert fail: ' + insertStr);
+                console.log('Insert fail: ' + insertSql);
                 throw error;
             }
             console.log('create new user succeeded');
-            callback(results);
+            callback(error, results);
         });
     },
     
@@ -72,7 +73,7 @@ module.exports = {
                 console.log('Delete fails: ', deleteSql);
             }
             console.log('delete user succeeded');
-            callback(results);
+            callback(error, results);
         })
     },
     

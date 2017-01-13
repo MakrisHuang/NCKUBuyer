@@ -1,7 +1,23 @@
 angular.module('NCKUBuyer')
-.controller('BuyController', function($http, $scope, $rootScope, FindHelper){
-    // user $rootScope to maintain the user info
-    $rootScope.user;
+.controller('BuyController', function($http, $scope, FindHelper, LoginHelper){
+    $scope.loginHelper = LoginHelper;
+    $scope.hideLoggedInState = function(){
+        if (LoginHelper.logInMsg == 'expired'){
+            return true;    
+        }
+        if (LoginHelper.logInMsg == 'initial'){
+            return true;    
+        }
+        return false;
+    }
+    
+    $scope.clearLogInMsg = function(){
+        setInterval(function(){
+            LoginHelper.logInMsg = 'expired'
+            clearInterval($scope.clearLogInMsg)
+        }, 5000)
+    }
+    $scope.clearLogInMsg();
     
     $scope.stores = [];
     $http({method: 'GET', url: '/buy'}).then(function succ(response){
@@ -76,14 +92,17 @@ angular.module('NCKUBuyer')
             $scope.order.splice($index, 1)
         }
     }
-
-    $scope.totalPrice = function(){
+    $scope.orderPrice = function(){
         var total = 0;
         if ($scope.order.length > 0){
             for(i = 0; i < $scope.order.length; i++){
                 total += $scope.order[i].price * $scope.order[i].amount;
             }
         }
+        return total
+    }
+    $scope.totalPrice = function(){
+        var total = $scope.orderPrice();
         total += $scope.extraPay();
         return total;
     }
@@ -108,10 +127,9 @@ angular.module('NCKUBuyer')
     /* ---------data handling end ----------*/
     
     $scope.getFindHelperMsg = function(){
-        if ($scope.user.loginState === 'logined'){
+        if ($scope.loginHelper.isLoggedIn === true){
             return "尋找幫買者"
-        }
-        if ($scope.user.loginState === 'unlogined'){
+        }else{
             return "請先登入"
         }
     }
@@ -149,31 +167,29 @@ angular.module('NCKUBuyer')
     $scope.helper = null;
     $scope.findHelper = function(){
         if ($scope.order.length > 0){
+            var buyerInfo = {
+                userId: LoginHelper.userInfo.userId,
+                account: LoginHelper.userInfo.account, 
+                name: LoginHelper.userInfo.name, 
+                telephone: LoginHelper.userInfo.telephone, 
+                dorm: LoginHelper.userInfo.dorm
+            }
+            
             var data = {
-                order: $scope.order, 
-                buyer: $scope.name
+                order: $scope.order,
+                earn: $scope.extraPay(), 
+                total: $scope.orderPrice(),
+                buyer: buyerInfo
             }
             FindHelper.emit('send:order', data)
         }
     }
     
-    $scope.setIdentity = function(identity){
-        socket.emit('set:identity', {identity: 'buyer'});
-    }
-    
-    $scope.allHelpers = 0;
+    $scope.numOfHelpers = 0;
     
     /* ---------FindHelper service begin ----------*/
     FindHelper.on('send:allHelper', function(data){
-       console.log('on: [send:allHelper]', data) 
-       $scope.allHelpers = data.length;
-    });
-    
-    FindHelper.emit('set:identity', {identity: 'buyer'})
-    
-    FindHelper.on('init', function(data){
-        console.log('on: [init]', data)
-        $scope.name = data['name']
+       $scope.numOfHelpers = data.length;
     });
     
     FindHelper.on('send:progress', function(data){

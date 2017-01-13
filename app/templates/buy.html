@@ -1,3 +1,11 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<div class="alert alert-success" role="alert" ng-hide="hideLoggedInState()" style="margin-top: 50px; margin-bottom: -40px">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="false"></span>
+    <span class="sr-only"></span>
+    <span>{{loginHelper.logInMsg}}</span>
+</div>
+
 <div class='section' style="margin-top: 50px;">
     <ui-shared-state id='activeTab' default='0'></ui-shared-state>
 
@@ -66,21 +74,21 @@
     <!-- order section -->
     <div class="section">
         <div class="panel panel-default">
-            <div class="panel-heading">Your Order</div>
+            <div class="panel-heading">您的訂單</div>
 
             <!-- panel body -->
             <div class="panel-body">
                 {{orderDescription}}<br><br>
-                目前線上可幫買人數: {{allHelpers}}
+                目前線上可幫買人數: {{numOfHelpers}}
             </div>
 
             <!-- panel content -->
             <table class="table">
                 <tr>
-                    <th>Food (Store)</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                    <th>Total</th>
+                    <th>食物 (店家)</th>
+                    <th>價格</th>
+                    <th>數量</th>
+                    <th>總價</th>
                 </tr>
                 <tr ng-repeat="orderedItem in order">
                     <td>
@@ -110,8 +118,8 @@
             </table>
             <div class="panel-footer" ng-show="order.length > 0">
                 <div class="nav nav-pills">
-                    <button class="btn btn-success btn pull-left" ng-click="findHelper()" ng-disabled="user.loginState == 'unlogined'">{{getFindHelperMsg()}}</button>
-                    <h4 class="pull-right">Total: $ {{totalPrice()}}</h4>
+                    <button class="btn btn-success btn pull-left" ng-model="loginHelper.isLoggedIn"  ng-disabled="loginHelper.isLoggedIn == false" ng-click="findHelper()">{{getFindHelperMsg()}}</button>
+                    <h4 class="pull-right">總支付費用: $ {{totalPrice()}}</h4>
                 </div>
             </div>
         </div>    
@@ -133,24 +141,20 @@
             <div class="panel-body">您的訂單已成立，以下為幫買人的資訊，請耐心等候</div>
             <table class="table">
                 <tr>
-                    <td>Name </td>
-                    <td>{{helper}}</td>
+                    <td>姓名</td>
+                    <td>{{helper.name}}</td>
                 </tr>
                 <tr>
-                    <td>Phone</td>
-                    <td>0912345678</td>
+                    <td>電話號碼</td>
+                    <td>{{helper.telephone}}</td>
                 </tr>
                 <tr>
-                    <td>Facebook</td>
-                    <td><a href=""></a></td>
+                    <td>跑腿費用</td>
+                    <td>{{extraPay()}}</td>
                 </tr>
                 <tr>
-                    <td>Extra Money</td>
-                    <td>$20</td>
-                </tr>
-                <tr>
-                    <td>Total to Pay</td>
-                    <td>$60</td>
+                    <td>總共費用</td>
+                    <td>{{totalPrice()}}</td>
                 </tr>
             </table>
         </div>
@@ -158,7 +162,7 @@
         
         <!-- no helper found info -->
         <div class="panel panel-danger" ng-show="progressDone(0)">
-            <div class="panel-heading">Helper Info</div>
+            <div class="panel-heading">幫買者資訊</div>
             <div class="panel-body">不好意思，目前沒有幫買的人QAQ</div>
         </div>
         <!-- end no helper found info -->

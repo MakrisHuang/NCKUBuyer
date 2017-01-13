@@ -1,28 +1,16 @@
 <div class="section" style="margin-top: 50px;" ng-show="buyer != null">
     <!-- buyer info -->
     <div class="panel panel-success">
-        <div class="panel-heading">有新的訂單！</div>
+        <div class="panel-heading">訂購人資訊</div>
         <div class="panel-body">
             <table class="table">
                 <tr>
                     <td>Name</td>
-                    <td>{{buyer}}</td>
+                    <td>{{buyer.name}}</td>
                 </tr>
                 <tr>
                     <td>Phone</td>
-                    <td>{{buyer.phone}}</td>
-                </tr>
-                <tr>
-                    <td>Facebook</td>
-                    <td><a href="">{{buyer.facebook}}</a></td>
-                </tr>
-                <tr>
-                    <td>Extra Money</td>
-                    <td>{{buyer.extraMoney}}</td>
-                </tr>
-                <tr>
-                    <td>Total to Pay</td>
-                    <td>{{buyer.total}}</td>
+                    <td>{{buyer.telephone}}</td>
                 </tr>
             </table>
         </div>
@@ -53,16 +41,16 @@
                 <td>$ {{orderedItem.price * orderedItem.amount}}</td>
                 <tfoot>
                     <tr>
-                        <td colspan="2">額外費用</td>
+                        <td colspan="2">欲支付給店家的費用</td>
                         <td></td>
-                        <td>{{extraPay()}}</td>
+                        <td>{{total}}</td>
                     </tr>
                 </tfoot>
             </tr>
         </table>
         <div class="panel-footer">
             <div class="nav nav-pills">
-                <h4 class="pull-right">Total: $ {{totalPrice()}}</h4>
+                <h4 class="pull-right">您這次幫買可獲得的費用: $ {{earn}}</h4>
             </div>
         </div>
     </div>

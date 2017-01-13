@@ -1,17 +1,30 @@
-<form class="form-horizontal" role="form" ng-submit="login()">
+<!-- reload bootstrap.css for dropdown menu function -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="../style.css">
+
+
+<form class="form-horizontal" role="form" name="loginForm" ng-submit="login()" style="margin-top: 50px">
+    <div class="alert alert-danger" ng-show="errorMessage"  style="margin-top: 50px;">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="false"></span>
+        <span class="sr-only"></span>
+        <span ng-bind="errorMessage"></span>
+    </div>
     <!-- 1. account: email -->
     <div class="form-group">
         <label for="inputAccount" class="col-sm-2 control-label">帳號</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputAccount" placeholder="電子郵件" ng-model="user.account" required>
+            <input type="email" class="form-control" id="inputAccount" placeholder="電子郵件" ng-model="user.account" required="">
         </div>
     </div>
     
     <!-- 2. password -->
     <div class="form-group">
-        <label for="inputPassword" class="col-sm-2 form-control">密碼</label>
+        <label for="inputPassword" class="col-sm-2 control-label">密碼</label>
         <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword" placeholder="密碼" ng-model="user.password" required>
+            <input type="password" class="form-control" id="inputPassword" placeholder="密碼" ng-model="user.password" required="">
         </div>
     </div>
+    
+    <!-- submit button -->
+    <input type="submit" class="btn btn-success pull-right" value="登入" ng-disabled="loginForm.$invalid">
 </form>

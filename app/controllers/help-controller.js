@@ -1,32 +1,23 @@
 angular.module('NCKUBuyer')
-.controller('HelpToBuyController', function($http, $scope, FindHelper){
-    $scope.name;
-    $scope.buyer = null;
-    $scope.allBuyer = 0;
-    
-    $scope.setIdentity = function(identity){
-        socket.emit('set:identity', {identity: 'helper'})
-    }
-    
-    FindHelper.on('init', function(data){
-        console.log('on: [init]', data)
-        $scope.name = data['name']
-    })
+.controller('HelpToBuyController', function($http, $scope, FindHelper, LoginHelper){
+    $scope.buyer;
+    $scope.numOfBuyers = 0;
     
     FindHelper.on('found:helper', function(notificiationForHelper){
         console.log('on: [found:helper], helper with buyer: ', notificiationForHelper)
         
         // 2. check if the helper is self
-        if (notificiationForHelper['helper'] == $scope.name){
+        if (notificiationForHelper['helper'].userId == LoginHelper.userInfo.userId){
+            
             // 3. show buyer info
             $scope.buyer = notificiationForHelper['buyer'];
             $scope.order = notificiationForHelper['order'];
+            $scope.total = notificiationForHelper['total'];
+            $scope.earn = notificiationForHelper['earn'];
         }
     });
     
     FindHelper.on('send:allBuyer', function(data){
         $scope.allBuyer = data.length    
     })
-    
-    FindHelper.emit('set:identity', {identity: 'helper'})
 });

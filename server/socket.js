@@ -3,80 +3,60 @@
 
 /* Buyer and Helper */
 var allUsers = (function(){
-    var userNames = {};     // only stores the names
     var buyers = {};
     var helpers = {};
     
-    var claim = function(name){
-        if (!name || userNames[name]){
-            return false;
-        }else{
-            userNames[name] = 'joined';
-            // after 'joined', set the identity
-            return true;
+    var getAllBuyer = function(){
+        var allBuyer = []
+        for (buyer in buyers){
+            allBuyer.push(buyer)
         }
+        
+        return allBuyer
     };
     
-    var getName = function(){
-        var name, nextUserId = 1;
+    var getAllHelper = function(){
+        var allHelper = []
+        for (helper in helpers){
+            allHelper.push(helper)
+        }
         
-        do{
-            name = 'User ' + nextUserId;
-            nextUserId += 1;
-        }while(!claim(name));
-        
-        return name;
+        return allHelper
     };
     
-    // dump all helper to array
-    var getAllUser = function(){
-        var allUsers = []
-        for (user in userNames){
-            allUsers.push(user)
-        }
+    var freeUser = function(userInfo){
+        var userId = userInfo.userId;
+        var identity = userInfo.identity;
         
-        return allUsers;
-    }
-    
-    var freeUser = function(name){
-        var identity;
-        if (userNames[name]){
-            identity = userNames[name];
-            delete userNames[name];
-            console.log('[delete] allUsers: ', userNames)
-            
-            if (identity == 'buyer'){
-                delete buyers[name]
-                console.log('[delete] buyers: ', buyers)
-            }
-            if (identity == 'helper'){
-                delete helpers[name]
-                console.log('[delete] helpers: ', helpers)
-            }
-        }
-    }
-    
-    var setIdentityWithName = function(identity, name){
         if (identity == 'buyer'){
-            userNames[name] = 'buyer'
-            buyers[name] = {name: name, identity: 'buyer'}
+            delete buyers[userId]   
+        }
+        if (identity == 'helper'){
+           delete helpers[userId]
+        }
+    };
+    
+    var setIdentityWithUserInfo = function(userInfo){
+        var userId = userInfo.userId
+        var identity = userInfo.identity;
+        
+        if (identity == 'buyer'){
+            buyers[userId] = userInfo
             
             // clean identity in helper if exists
-            if (helpers[name]){
-                delete helpers[name]
+            if (helpers[userId]){
+                delete helpers[userId]
             }
         }
         if (identity == 'helper'){
-            userNames[name] = 'helper'
-            helpers[name] = {name: name, identity: 'helper'}
+            helpers[userId] = userInfo
             
             // clean identity in buyer if exists
-            if (buyers[name]){
-                delete buyers[name]
+            if (buyers[userId]){
+                delete buyers[userId]
             }
         }
         console.log('after setting identity: ')
-        console.log('allUsers: ', userNames)
         console.log('buyers: ', buyers)
         console.log('helpers: ', helpers)
     };
@@ -98,34 +78,41 @@ var allUsers = (function(){
     };
     
     return {
-        claim: claim, 
-        getName: getName, 
-        getAllUser: getAllUser, 
-        freeUser: freeUser, 
-        setIdentityWithName: setIdentityWithName, 
+        buyers: buyers, 
+        helpers: helpers,
         getAllBuyer: getAllBuyer, 
-        getAllHelper: getAllHelper
+        getAllHelper: getAllHelper,
+        freeUser: freeUser, 
+        setIdentityWithUserInfo: setIdentityWithUserInfo, 
     };
 }());
 
-var progress = 60;
-
 module.exports = function(socket){
-    // server keeps all buyers and helpers
-    var user = allUsers.getName();
+    var personInfo;
     
-    socket.emit('init',{
-        msg: 'init from server', 
-        name: user
-    });
+    socket.on('init', function(userInfo){
+        console.log('on [init] get userInfo from user: ', userInfo)
+        var userId = userInfo.userId
+        
+        if (userInfo.identity == 'buyer'){
+            allUsers.buyers[userId] = userInfo
+        }
+        if (userInfo.identity == 'helper'){
+            allUsers.helpers[userId] = userInfo
+        }
+        
+        // keep the userInfo
+        personInfo = userInfo
+        console.log('on [init] userInfo: ', personInfo)
+    })
     
     // notify clients the current online buyers and helpers
     socket.emit('send:allBuyer', allUsers.getAllBuyer());
     socket.emit('send:allHelper', allUsers.getAllHelper());
     
-    socket.on('set:identity', function(data){
-        console.log('on: [set:identity]', data)
-        allUsers.setIdentityWithName(data['identity'], user)
+    socket.on('set:identity', function(userInfo){
+        console.log('on: [set:identity]', userInfo)
+        allUsers.setIdentityWithUserInfo(userInfo)
         
         // notify all that the identities of user have changed
         socket.broadcast.emit('send:allBuyer', allUsers.getAllBuyer());
@@ -141,9 +128,10 @@ module.exports = function(socket){
         var counter = 0;
         var findHelperInterval = setInterval(function(){
             var allHelpers = allUsers.getAllHelper()
-            var helper = allHelpers.pop();
+            var helperId = allHelpers.pop();
             
-            if (helper){
+            console.log('[server] helper found: ', helperId)
+            if (helperId){
                 // 1. send done progress
                 counter = 90;
                 socket.emit('send:progress', counter)
@@ -163,7 +151,9 @@ module.exports = function(socket){
                 var buyer = orderInfo['buyer'];
                 var notificiationForHelper = {
                     buyer: buyer, 
-                    helper: helper, 
+                    helper: allUsers.helpers[helperId], 
+                    total: orderInfo['total'],
+                    earn: orderInfo['earn'],
                     order: orderInfo['order']
                 }
                 // notify others
@@ -198,14 +188,17 @@ module.exports = function(socket){
         }, 1000)
     });
     
-    // Login Part
     
     // clean up when a helper leaves
     socket.on('disconnect', function(){
-        console.log('on: [disconnect]', user)
-        allUsers.freeUser(user);
-        
-        socket.broadcast.emit('send:allBuyer', allUsers.getAllBuyer());
-        socket.broadcast.emit('send:allHelper', allUsers.getAllHelper());
+        if (personInfo != undefined){
+            console.log('on: [disconnect] userInfo = ', personInfo)
+            allUsers.freeUser(personInfo);
+            
+            socket.broadcast.emit('send:allBuyer', allUsers.getAllBuyer());
+            socket.broadcast.emit('send:allHelper', allUsers.getAllHelper());
+        }else{
+            console.log('on: [disconnect] without userInfo')
+        }
     })
 }

@@ -1,4 +1,4 @@
-angular.module('NCKUBuyer').controller('RegisterController', function($http, $scope, $rootScope){
+angular.module('NCKUBuyer').controller('RegisterController', function($http, $scope, $location, LoginHelper){
    $scope.getDorm = function(dormID){
         switch(dormID){
             case 1: 
@@ -26,5 +26,29 @@ angular.module('NCKUBuyer').controller('RegisterController', function($http, $sc
                 console.log("Unknown dorm id: ", dormID)
                 break;
         }
-    } 
+    };
+    
+    $scope.register = function(){
+        var newUser = {
+            account: $scope.user.account, 
+            password: $scope.user.password, 
+            name: $scope.user.name, 
+            telephone: $scope.user.telephone, 
+            dorm: $scope.user.dorm
+        }
+        console.log('[client] register newuser: ', newUser)
+        
+        LoginHelper.register(newUser).then(
+            function(success){
+                console.log('create new user succeeded: ', success);
+
+                // redirect to buy page
+                $location.path('/login')
+            }, function(error){
+                console.log('[client] error in creating new user', error);
+                
+                // show error message
+            }
+        )
+    };
 });
