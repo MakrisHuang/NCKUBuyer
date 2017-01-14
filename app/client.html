@@ -50,34 +50,34 @@
     <body>
         <div ng-controller="MainController as mainCtrl">
     	   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    		<div class="navbar-header">
-                <!-- left part -->
-    			<a class="navbar-brand pull-left" href="#/buy" ng-click="mainCtrl.setIdentity('buyer')">買宵夜</a>
-    			<a class="navbar-brand title" href="#/helpToBuy" ng-click="mainCtrl.setIdentity('helper')">幫別人買</a>
-                
-                <!-- right part -->
-                <!-- 註冊 -->
-                <span class="navbar-brand pull-right" ng-hide="mainCtrl.loginHelper.isLoggedIn">
-                    <a href="#/register">註冊</a>
-                </span>
-                
-                <!-- 登入和登出 -->
-    			<span class="pull-right navbar-brand" ng-hide="mainCtrl.loginHelper.isLoggedIn">
-                    <a href="#/login">登入</a>
-                </span>
-                <span class="pull-right navbar-brand" ng-show="mainCtrl.loginHelper.isLoggedIn">
-                    <a href="/api/logout">登出</a>
-                </span>
-                
-                <!-- 登入後的歡迎詞和設定 -->
-                <span class="pull-right navbar-brand" ng-show="mainCtrl.loginHelper.isLoggedIn">
-                    <a href="#/myInfo">設定</a>
-                </span>
-                <span class="navbar-brand pull-right" ng-show="mainCtrl.loginHelper.isLoggedIn">
-                    Hi, {{mainCtrl.loginHelper.userInfo.name}}
-                </span>
-    		</div>
-    	</nav>
+                <div class="navbar-header">
+                    <!-- left part -->
+                    <a class="navbar-brand pull-left" href="#/buy" ng-click="mainCtrl.setIdentity('buyer')" ng-style="mainCtrl.buyerIdentity">買宵夜</a>
+                    <a class="navbar-brand title" href="#/helpToBuy" ng-click="mainCtrl.setIdentity('helper')" ng-style="mainCtrl.helperIdentity">幫別人買</a>
+
+                    <!-- right part -->
+                    <!-- 註冊 -->
+                    <span class="navbar-brand pull-right" ng-hide="mainCtrl.loginHelper.isLoggedIn">
+                        <a href="#/register">註冊</a>
+                    </span>
+
+                    <!-- 登入和登出 -->
+                    <span class="pull-right navbar-brand" ng-hide="mainCtrl.loginHelper.isLoggedIn">
+                        <a href="#/login">登入</a>
+                    </span>
+                    <span class="pull-right navbar-brand" ng-show="mainCtrl.loginHelper.isLoggedIn">
+                        <a href="/api/logout">登出</a>
+                    </span>
+
+                    <!-- 登入後的歡迎詞和設定 -->
+                    <span class="pull-right navbar-brand" ng-show="mainCtrl.loginHelper.isLoggedIn">
+                        <a href="#/myInfo">設定</a>
+                    </span>
+                    <span class="navbar-brand pull-right" ng-show="mainCtrl.loginHelper.isLoggedIn">
+                        Hi, {{mainCtrl.loginHelper.userInfo.name}}
+                    </span>
+                </div>
+    	   </nav>
         </div>
 
         <div class="scrollable orderContent">

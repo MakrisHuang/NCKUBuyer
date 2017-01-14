@@ -19,7 +19,7 @@ angular.module('NCKUBuyer').controller('LoginController', function($scope, $http
                     
                     // Fire socket to as identity of buyer
                     // initially set identity as buyer
-                    LoginHelper.identity = 'buyer'
+                    LoginHelper.userInfo.identity = 'buyer'
                     
                     // notify server to keep the userInfo
                     FindHelper.emit('init', LoginHelper.userInfo)

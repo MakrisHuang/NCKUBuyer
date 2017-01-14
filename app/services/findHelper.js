@@ -3,7 +3,9 @@ angular.module("NCKUBuyer").factory('FindHelper', function FindHelperFactory($ro
     var socket = io.connect();
     var services = {
         on: on, 
-        emit: emit
+        emit: emit, 
+        numOfHelpers: 0, 
+        numOfBuyers: 0
     }
     
     function on(eventName, callback){

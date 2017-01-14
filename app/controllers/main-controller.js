@@ -10,12 +10,25 @@ angular.module('NCKUBuyer').controller('MainController', function(LoginHelper, F
     
     // set identity
     self.setIdentity = function(identity){
-        // renew the identity of usreInfo
-        LoginHelper.userInfo.identity = identity;
-        console.log('[MainController] LoginHelper.userInfo: ', LoginHelper.userInfo)
-        
         if (LoginHelper.isLoggedIn){
+            // renew the identity of usreInfo
+            LoginHelper.userInfo.identity = identity;
             FindHelper.emit('set:identity', LoginHelper.userInfo);
         }
+        
+        // change brand color
+        if (identity == 'buyer'){
+            self.buyerIdentity = {'color': "#FF9090"}
+            self.helperIdentity = {'color': ""}            
+        }
+        if (identity == 'helper'){
+            self.buyerIdentity = {'color': ""}
+            self.helperIdentity = {'color': "#FF9090"}            
+        }
+        
     }
+    
+    // create ng-style if the identity is selected
+    self.buyerIdentity = {'color': "#FF9090"}
+    self.helperIdentity = {'color': ""}
 });

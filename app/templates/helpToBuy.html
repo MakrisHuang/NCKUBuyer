@@ -1,3 +1,9 @@
+<!-- reload css to get default style -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<div class="section" style="margin-top: 50px;">
+    <p class="bg-info" style="border-radius: 4px; padding-left: 5px; color: gray">目前線上考慮購買人數：{{findHelper.numOfBuyers}}</p>
+</div>
 <div class="section" style="margin-top: 50px;" ng-show="buyer != null">
     <!-- buyer info -->
     <div class="panel panel-success">
@@ -5,11 +11,11 @@
         <div class="panel-body">
             <table class="table">
                 <tr>
-                    <td>Name</td>
+                    <td>姓名</td>
                     <td>{{buyer.name}}</td>
                 </tr>
                 <tr>
-                    <td>Phone</td>
+                    <td>手機</td>
                     <td>{{buyer.telephone}}</td>
                 </tr>
             </table>
@@ -19,13 +25,13 @@
     
     <!-- order info -->
     <div class="panel panel-info">
-        <div class="panel-heading">Order Info</div>
+        <div class="panel-heading">訂單資訊</div>
         <table class="table">
             <tr>
-                <th>Food (Store)</th>
-                <th>Price</th>
-                <th>Amount</th>
-                <th>Total</th>
+                <th>食物 (店家)</th>
+                <th>價格</th>
+                <th>數量</th>
+                <th>小計</th>
             </tr>
             <tr ng-repeat="orderedItem in order">
                 <td>

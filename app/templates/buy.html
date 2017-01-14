@@ -79,7 +79,7 @@
             <!-- panel body -->
             <div class="panel-body">
                 {{orderDescription}}<br><br>
-                目前線上可幫買人數: {{numOfHelpers}}
+                目前線上可幫買人數: {{findHelper.numOfHelpers}}
             </div>
 
             <!-- panel content -->
@@ -118,7 +118,7 @@
             </table>
             <div class="panel-footer" ng-show="order.length > 0">
                 <div class="nav nav-pills">
-                    <button class="btn btn-success btn pull-left" ng-model="loginHelper.isLoggedIn"  ng-disabled="loginHelper.isLoggedIn == false" ng-click="findHelper()">{{getFindHelperMsg()}}</button>
+                    <button class="btn btn-success btn pull-left" ng-model="loginHelper.isLoggedIn"  ng-disabled="loginHelper.isLoggedIn == false" ng-click="findNewHelper()">{{getFindHelperMsg()}}</button>
                     <h4 class="pull-right">總支付費用: $ {{totalPrice()}}</h4>
                 </div>
             </div>

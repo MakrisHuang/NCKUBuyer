@@ -165,7 +165,7 @@ angular.module('NCKUBuyer')
     
     // send order and find helper
     $scope.helper = null;
-    $scope.findHelper = function(){
+    $scope.findNewHelper = function(){
         if ($scope.order.length > 0){
             var buyerInfo = {
                 userId: LoginHelper.userInfo.userId,
@@ -184,12 +184,11 @@ angular.module('NCKUBuyer')
             FindHelper.emit('send:order', data)
         }
     }
-    
-    $scope.numOfHelpers = 0;
+    $scope.findHelper = FindHelper;
     
     /* ---------FindHelper service begin ----------*/
     FindHelper.on('send:allHelper', function(data){
-       $scope.numOfHelpers = data.length;
+       $scope.findHelper.numOfHelpers = data.length;
     });
     
     FindHelper.on('send:progress', function(data){

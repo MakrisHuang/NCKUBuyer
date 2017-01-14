@@ -1,7 +1,7 @@
 angular.module('NCKUBuyer')
 .controller('HelpToBuyController', function($http, $scope, FindHelper, LoginHelper){
+    $scope.findHelper = FindHelper
     $scope.buyer;
-    $scope.numOfBuyers = 0;
     
     FindHelper.on('found:helper', function(notificiationForHelper){
         console.log('on: [found:helper], helper with buyer: ', notificiationForHelper)
@@ -18,6 +18,6 @@ angular.module('NCKUBuyer')
     });
     
     FindHelper.on('send:allBuyer', function(data){
-        $scope.allBuyer = data.length    
-    })
+        FindHelper.numOfBuyers = data.length; 
+    });
 });

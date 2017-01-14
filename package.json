@@ -2,9 +2,10 @@
   "name": "nckubuyer",
   "version": "1.0.0",
   "description": "The final project of web design",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,14 @@
   "author": "Makris Huang",
   "license": "MIT",
   "dependencies": {
-    "angular-route": "^1.6.0",
-    "socket.io": "^1.7.2"
+    "angular-route": "1.6.1",
+    "body-parser": "1.15.2",
+    "cool-ascii-faces": "1.3.4",
+    "express": "4.14.0",
+    "express-session": "1.14.2",
+    "mobile-angular-ui": "1.3.4",
+    "mysql": "2.12.0",
+    "passport": "0.3.2",
+    "socket.io": "1.7.2"
   }
 }

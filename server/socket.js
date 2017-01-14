@@ -95,11 +95,15 @@ module.exports = function(socket){
         var userId = userInfo.userId
         
         if (userInfo.identity == 'buyer'){
-            allUsers.buyers[userId] = userInfo
+            allUsers.buyers[userId] = userInfo;
         }
         if (userInfo.identity == 'helper'){
             allUsers.helpers[userId] = userInfo
         }
+        
+        console.log('after setting identity: ')
+        console.log('buyers: ', allUsers.buyers)
+        console.log('helpers: ', allUsers.helpers)
         
         // keep the userInfo
         personInfo = userInfo
