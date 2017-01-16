@@ -19,5 +19,6 @@ angular.module('NCKUBuyer')
     
     FindHelper.on('send:allBuyer', function(data){
         FindHelper.numOfBuyers = data.length; 
+        $scope.findHelper = FindHelper;
     });
 });
