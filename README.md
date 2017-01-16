@@ -6,6 +6,14 @@ This **成大宵夜購** is designed for those who live in dorms and want others
 ### Structure
 This app use MVC structure, the AngularJS has the controllers to handle interaction with user.
 
+### Screen Shot
+#### Buyer - Initial
+![Buyer](./buyer_initial.png)
+#### Buyer - After find helper
+![Buyer](./buyer_find_helper.png)
+#### Helper - a buyer gave the order
+![Helper](./helper_find_helper.png)
+
 ---
 
 ### File Structure
