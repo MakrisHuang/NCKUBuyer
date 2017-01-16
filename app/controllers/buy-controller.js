@@ -208,4 +208,32 @@ angular.module('NCKUBuyer')
         console.log('on: [notfound:helper]', data)
     })
     /* ---------FindHelper service end ----------*/
+    
+    $scope.showFood = function(item){
+        var foodModal = document.getElementById('foodModal');
+        
+        // get the store name
+        var storeId = item.storeId;
+        var storeName = $scope.stores[storeId]['name']
+        
+        // get the image and insert it inside the modal
+        var foodImg = new Image();
+        var srcPath = "./img/" + storeName + "/" + item.food + ".jpg";
+        foodImg.src = srcPath;
+        
+        var foodModalContent = document.getElementById('foodModalContent')
+        foodModalContent.onload = function(){
+            foodModal.style.display = "block";
+        }
+        foodModalContent.src = foodImg.src;
+        
+        // get the <span> element that closes the modal
+        var span = document.getElementsByClassName("closeFood")[0];
+        
+        // when the user clicks on <span> (x), close the modal
+        span.onclick = function(){
+            console.log('close is clicked')
+            foodModal.style.display = "none";
+        }
+    }
 });

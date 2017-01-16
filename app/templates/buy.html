@@ -26,7 +26,7 @@
         <div class="container">
             <div class="row" ng-repeat="item in getCurrentItems(0)">
                 <div class="col-xs-6">
-                    <h5>{{item.food}}</h5>
+                    <a ng-click="showFood(item)">{{item.food}}</a>
                 </div>
                 <div class="col-xs-3">
                     <h5>${{item.price}}</h5>
@@ -42,7 +42,7 @@
         <div class="container">
             <div class="row" ng-repeat="item in getCurrentItems(1)">
                 <div class="col-xs-6">
-                    <h5>{{item.food}}</h5>
+                    <a ng-click="showFood(item)">{{item.food}}</a>
                 </div>
                 <div class="col-xs-3">
                     <h5>${{item.price}}</h5>
@@ -58,7 +58,7 @@
         <div class="container">
             <div class="row" ng-repeat="item in getCurrentItems(2)">
                 <div class="col-xs-6">
-                    <h5>{{item.food}}</h5>
+                    <a ng-click="showFood(item)">{{item.food}}</a>
                 </div>
                 <div class="col-xs-3">
                     <h5>${{item.price}}</h5>
@@ -70,6 +70,15 @@
         </div>
     </div> <!-- end of food item -->
 </div> <!-- end of food item section -->
+
+<!-- food image modal -->
+<div id="foodModal" class="modal">
+    <!-- modal content -->
+    <img class="modal-content" id="foodModalContent">
+    
+    <!-- close button -->
+    <span class="closeFood" onclick="document.getElementById('foodModal').style.display='none'">&times;</span>
+</div>
 
     <!-- order section -->
     <div class="section">

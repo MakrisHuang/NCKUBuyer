@@ -10,7 +10,7 @@ var storeWithFoods = [
              "price": 40, 
              "storeId": 0
             },
-            {"food": "鹽酥雞", 
+            {"food": "香酥雞", 
              "price": 30, 
              "storeId": 0
             }, 
