@@ -1,4 +1,7 @@
 angular.module('NCKUBuyer').controller('RegisterController', function($http, $scope, $location, LoginHelper){
+    $scope.user = {
+        dorm: ""
+    }
    $scope.getDorm = function(dormID){
         switch(dormID){
             case 1: 
